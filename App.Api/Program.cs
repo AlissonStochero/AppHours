@@ -13,12 +13,13 @@ builder.Services.AddCors();
 builder.Services.AddOptions();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AppDb"))
+    //options.UseNpgsql(builder.Configuration.GetConnectionString("AppHoursDb"))
+    options.UseInMemoryDatabase("AppHoursDb")
 );
 
 App.Persistence.DependencyInjectionConfig.Inject(builder.Services);
 App.Application.DependencyInjectionConfig.Inject(builder.Services);
-App.Infrastructure.DependencyInjectionConfig.Inject(builder.Services);
+App.Infraetructure.DependencyInjectionConfig.Inject(builder.Services);
 
 var app = builder.Build();
 

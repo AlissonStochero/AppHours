@@ -19,8 +19,21 @@ namespace App.Api.Controllers
         {
             try
             {
-                var collaboratorCreated = service.Save(collaborator);
+                var collaboratorCreated = await service.Save(collaborator);
                 return Ok(collaboratorCreated);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var collaborators = await service.GetAll();
+                return Ok(collaborators);
             }
             catch (Exception ex)
             {

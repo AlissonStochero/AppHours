@@ -10,5 +10,6 @@ namespace App.Domain.Interfaces.Application
     public interface ICollaboratorService
     {
         Task<Collaborator> Save(Collaborator collaborator);
+        Task<List<Collaborator>> GetAll();
     }
 }

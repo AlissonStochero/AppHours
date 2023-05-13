@@ -1,6 +1,7 @@
 ﻿using App.Domain.Entities;
 using App.Domain.Interfaces.Application;
 using App.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,10 @@ namespace App.Application.Services
             _repository.SaveChanges();
 
             return collaboratorSaved;
+        }
+        public Task<List<Collaborator>> GetAll()
+        {
+            return _repository.Query(x => x.Id != null).ToListAsync();
         }
     }
 }
