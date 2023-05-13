@@ -44,7 +44,7 @@ namespace App.Persistence.Repositories
                 await _dbSetEntity.AddAsync(obj);
                 return obj;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
