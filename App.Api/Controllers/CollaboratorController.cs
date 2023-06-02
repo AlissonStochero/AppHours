@@ -1,5 +1,6 @@
 ﻿using App.Domain.Entities;
 using App.Domain.Interfaces.Application;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Api.Controllers
@@ -9,9 +10,11 @@ namespace App.Api.Controllers
     public class CollaboratorController : Controller
     {
         private readonly ICollaboratorService service;
-        public CollaboratorController(ICollaboratorService _service)
+        private readonly IValidator<Collaborator> _collaboratorValidator;
+        public CollaboratorController(ICollaboratorService _service, IValidator<Collaborator>  collaboratorValidator)
         {
             service = _service;
+            _collaboratorValidator = collaboratorValidator;
         }
 
         [HttpPost("Save")]
@@ -19,6 +22,11 @@ namespace App.Api.Controllers
         {
             try
             {
+                var validationResult = _collaboratorValidator.Validate(collaborator);
+                if (!validationResult.IsValid)
+                {
+                    return BadRequest(validationResult.Errors);
+                }
                 var collaboratorCreated = await service.Save(collaborator);
                 return Ok(collaboratorCreated);
             }

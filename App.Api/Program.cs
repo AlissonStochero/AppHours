@@ -1,4 +1,7 @@
+using App.Domain.Entities;
+using App.Domain.RequestValidators;
 using App.Persistence;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     //options.UseNpgsql(builder.Configuration.GetConnectionString("AppHoursDb"))
     options.UseInMemoryDatabase("AppHoursDb")
 );
+
+builder.Services.AddTransient<IValidator<Collaborator>, CollaboratorValidator>();
 
 App.Persistence.DependencyInjectionConfig.Inject(builder.Services);
 App.Application.DependencyInjectionConfig.Inject(builder.Services);

@@ -2,11 +2,6 @@
 using App.Domain.Interfaces.Application;
 using App.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Application.Services
 {
@@ -20,11 +15,6 @@ namespace App.Application.Services
 
         public async Task<Collaborator> Save(Collaborator collaborator)
         {
-            if (!collaborator.KeyPassword.Validate())
-            {
-                throw new ArgumentException("Password is not valid.");
-            }
-
             var collaboratorSaved = await _repository.SaveAsync(collaborator);
             _repository.SaveChanges();
 
@@ -32,7 +22,7 @@ namespace App.Application.Services
         }
         public Task<List<Collaborator>> GetAll()
         {
-            return _repository.Query(x => x.Id != null).ToListAsync();
+            return _repository.Query(x => x.Id != Guid.Empty).ToListAsync();
         }
     }
 }
