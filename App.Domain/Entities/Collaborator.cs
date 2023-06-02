@@ -26,6 +26,6 @@ namespace App.Domain.Entities
         public Email Email { get; set; }
         public Password KeyPassword { get; set; }
 
-        public Company company { get; set; }
+        public Company Company { get; set; }
     }
 }

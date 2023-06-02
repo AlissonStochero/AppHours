@@ -15,7 +15,7 @@ namespace App.Domain.RequestValidators
             RuleFor(password => password.Key)
                 .NotEmpty().WithMessage("Key is required.")
                 .MaximumLength(300).WithMessage("Key is greater than 300 characters.");
-            RuleFor(password => password.Validate()).Must(isTrue => isTrue == false).WithMessage("Password is not valid.");
+            RuleFor(password => password.Validate()).Must(isTrue => isTrue == true).WithMessage("Password is not valid.");
         }
     }
 }
