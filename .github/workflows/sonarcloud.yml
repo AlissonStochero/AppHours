@@ -44,6 +44,11 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          
+      - name: Debug coverage file location
+        run: |
+          find . -type f -name "coverage.opencover.xml"
+          ls -R
       
       - name: Build and analyze
         env:
