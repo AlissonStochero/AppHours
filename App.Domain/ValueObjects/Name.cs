@@ -11,18 +11,14 @@ namespace App.Domain.ValueObjects
     {
         public Name(string firstName, string lastName)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = string.Format("{0} {1}", firstName, lastName);
         }
         //[Required(ErrorMessage = "First Name is required.")]
         //[MaxLength(100, ErrorMessage = "name is greater than 100 characters.")]
-        public string FirstName { get; set; }
-        //[Required(ErrorMessage = "Last Name is required.")]
-        //[MaxLength(100, ErrorMessage = "name is greater than 100 characters.")]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public override string ToString()
         {
-            return $"{FirstName} {LastName}";
+            return $"{FullName}";
         }
     }
 }
