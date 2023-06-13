@@ -9,6 +9,10 @@ namespace App.Domain.ValueObjects
 {
     public class Name
     {
+        public Name()
+        {
+            
+        }
         public Name(string firstName, string lastName)
         {
             FullName = string.Format("{0} {1}", firstName, lastName);

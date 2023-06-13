@@ -1,26 +1,44 @@
-﻿using App.Domain.Entities;
+﻿using App.Application.Services;
+using App.Domain.Entities;
+using App.Domain.Interfaces.Repositories;
 using App.Domain.RequestValidators;
 using App.Domain.ValueObjects;
 using App.Test.CollaboratorTest.UtilitiesCollaboratorTest;
 using Bogus;
 using FluentAssertions;
+using Moq;
 
 namespace App.Test.CollaboratorTest
 {
     public class CollaboratorTest
     {
+        public CollaboratorService MockCollaboratorService(Collaborator collaborator)
+        {
+            var mockRepository = new Mock<IRepositoryBase<Collaborator>>();
+            mockRepository.Setup(r => r.SaveAsync(collaborator))
+                .Callback((Collaborator c) => c.Id = Guid.NewGuid())
+                .ReturnsAsync(collaborator);
+
+            var collaboratorService = new CollaboratorService(mockRepository.Object);
+
+            return collaboratorService;
+        }
         #region Tests Use Cases
-        //[Fact]
-        //public void Save_Valid_Collaborator_UseCase()
-        //{
-        //    var collaboratorValidator = new CollaboratorValidator();
+        [Fact]
+        public async Task Save_Valid_Collaborator_UseCase()
+        {
+            var collaboratorValidator = new CollaboratorValidator();
 
-        //    var collaborator = RequestCollaborator.MakeCollaboratorRequest();
+            var collaborator = RequestCollaborator.MakeCollaboratorRequest();
 
-        //    var validation = collaboratorValidator.Validate(collaborator);
+            var validation = collaboratorValidator.Validate(collaborator);
 
-        //    validation.IsValid.Should().BeTrue();
-        //}
+            var collaboratorService = MockCollaboratorService(collaborator);
+
+            var collaboratorSaved = await collaboratorService.Save(collaborator);
+
+            collaboratorSaved.Id.Should().NotBe(Guid.Empty);
+        }
         #endregion
 
         #region Tests Request
