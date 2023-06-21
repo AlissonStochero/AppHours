@@ -25,6 +25,7 @@ namespace App.Domain.Entities
         public Name Name { get; set; }
         public Email Email { get; set; }
         public Password KeyPassword { get; set; }
+        public Guid CompanyId { get; set; }
 
         public Company Company { get; set; }
     }

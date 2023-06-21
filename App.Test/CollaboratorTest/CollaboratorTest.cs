@@ -12,7 +12,7 @@ namespace App.Test.CollaboratorTest
 {
     public class CollaboratorTest
     {
-        public CollaboratorService MockCollaboratorService(Collaborator collaborator)
+        public static CollaboratorService MockCollaboratorService(Collaborator collaborator)
         {
             var mockRepository = new Mock<IRepositoryBase<Collaborator>>();
             mockRepository.Setup(r => r.SaveAsync(collaborator))

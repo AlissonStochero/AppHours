@@ -19,7 +19,6 @@ public class RequestCollaborator
         string specialCharacters = "!@#$%^&*()";
         string uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         string lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-        string numbers = "0123456789";
 
         string password = "";
 
