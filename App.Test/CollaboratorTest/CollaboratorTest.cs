@@ -64,6 +64,21 @@ namespace App.Test.CollaboratorTest
             collaboratorReturn.Should().NotBeNull();
             collaboratorReturn.Id.Should().NotBe(Guid.Empty);
         }
+        [Fact]
+        public async Task GetAll_Collaborator_Valid_Id_UseCase()
+        {
+            var collaboratorValidator = new CollaboratorValidator();
+
+            var collaborator = RequestCollaborator.MakeCollaboratorRequest();
+
+            var validation = collaboratorValidator.Validate(collaborator);
+
+            var collaboratorService = MockCollaboratorService(collaborator);
+
+            var collaboratorReturn = await collaboratorService.GetAll();
+
+            collaboratorReturn.Should().HaveCountGreaterThanOrEqualTo(0);
+        }
         #endregion
 
         #region Tests Request

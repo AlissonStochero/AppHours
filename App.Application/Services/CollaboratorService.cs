@@ -23,7 +23,8 @@ namespace App.Application.Services
         }
         public Task<List<Collaborator>> GetAll()
         {
-            return _repository.Query(x => x.Id != Guid.Empty).ToListAsync();
+            var collaborators = _repository.Query(x => x.Id != Guid.Empty).ToList();
+            return Task.FromResult(collaborators);
         }
         public Task<Collaborator> Get(Guid Id)
         {
