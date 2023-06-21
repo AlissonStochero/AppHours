@@ -1,6 +1,7 @@
 ﻿using App.Domain.Entities;
 using App.Domain.Interfaces.Application;
 using App.Domain.Interfaces.Repositories;
+using App.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Application.Services
@@ -23,6 +24,11 @@ namespace App.Application.Services
         public Task<List<Collaborator>> GetAll()
         {
             return _repository.Query(x => x.Id != Guid.Empty).ToListAsync();
+        }
+        public Task<Collaborator> Get(Guid Id)
+        {
+            var collaborator = _repository.Query(x => x.Id == Id).FirstOrDefault();
+            return Task.FromResult(collaborator);
         }
     }
 }

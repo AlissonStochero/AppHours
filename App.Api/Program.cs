@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 builder.Services.AddTransient<IValidator<Collaborator>, CollaboratorValidator>();
+builder.Services.AddTransient<IValidator<Guid>, GuidValidator>();
 
 App.Persistence.DependencyInjectionConfig.Inject(builder.Services);
 App.Application.DependencyInjectionConfig.Inject(builder.Services);

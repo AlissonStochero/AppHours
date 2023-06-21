@@ -7,6 +7,8 @@ using App.Test.CollaboratorTest.UtilitiesCollaboratorTest;
 using Bogus;
 using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 namespace App.Test.CollaboratorTest
 {
@@ -19,10 +21,15 @@ namespace App.Test.CollaboratorTest
                 .Callback((Collaborator c) => c.Id = Guid.NewGuid())
                 .ReturnsAsync(collaborator);
 
+            mockRepository.Setup(r => r.Query(It.IsAny<Expression<Func<Collaborator, bool>>>()))
+                .Returns((Expression<Func<Collaborator, bool>> predicate) =>
+                    new List<Collaborator> { collaborator }.AsQueryable().Where(predicate));
+
             var collaboratorService = new CollaboratorService(mockRepository.Object);
 
             return collaboratorService;
         }
+
         #region Tests Use Cases
         [Fact]
         public async Task Save_Valid_Collaborator_UseCase()
@@ -38,6 +45,24 @@ namespace App.Test.CollaboratorTest
             var collaboratorSaved = await collaboratorService.Save(collaborator);
 
             collaboratorSaved.Id.Should().NotBe(Guid.Empty);
+        }
+        [Fact]
+        public async Task Get_Collaborator_Valid_Id_UseCase()
+        {
+            var collaboratorValidator = new CollaboratorValidator();
+
+            var collaborator = RequestCollaborator.MakeCollaboratorRequest();
+
+            var validation = collaboratorValidator.Validate(collaborator);
+
+            var collaboratorService = MockCollaboratorService(collaborator);
+
+            var collaboratorSaved = await collaboratorService.Save(collaborator);
+
+            var collaboratorReturn = await collaboratorService.Get(collaboratorSaved.Id);
+
+            collaboratorReturn.Should().NotBeNull();
+            collaboratorReturn.Id.Should().NotBe(Guid.Empty);
         }
         #endregion
 
@@ -177,6 +202,18 @@ namespace App.Test.CollaboratorTest
 
             validation.IsValid.Should().BeFalse();
             validation.Errors.Should().ContainSingle().And.Contain(error => error.ErrorMessage.Equals("Password is not valid."));
+        }
+        [Fact]
+        public void Get_Guid_Invalid_GuidEmpty_Collaborator_Request()
+        {
+            var guidValidator = new GuidValidator();
+
+            var collaborator = RequestCollaborator.MakeCollaboratorRequest();
+
+            var validation = guidValidator.Validate(collaborator.Id);
+
+            validation.IsValid.Should().BeFalse();
+            validation.Errors.Should().Contain(errors => errors.ErrorMessage.Equals("GUID is not empty."));
         }
         #endregion
     }

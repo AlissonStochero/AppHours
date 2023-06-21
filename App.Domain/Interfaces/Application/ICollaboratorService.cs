@@ -11,5 +11,6 @@ namespace App.Domain.Interfaces.Application
     {
         Task<Collaborator> Save(Collaborator collaborator);
         Task<List<Collaborator>> GetAll();
+        Task<Collaborator> Get(Guid Id);
     }
 }
